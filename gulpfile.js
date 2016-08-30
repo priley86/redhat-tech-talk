@@ -12,7 +12,8 @@ var paths = {
     './src/web-presentation-keyboardcontrols.html',
     './src/web-presentation-progress.html'],
   transitionsSrc: './src/transitions/**/*.scss',
-  transitionsFile: './src/transitions/transitions.scss'
+  transitionsFile: './src/transitions/transitions.scss',
+  stylesSrc: './src/styles/*.scss'
 };
 
 gulp.task('webserver', function() {
@@ -35,11 +36,16 @@ gulp.task('sass', function () {
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./dist'))
     .pipe(gulp.dest('./demo'));
+
+  gulp.src(paths.stylesSrc)
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./demo'));
 });
 
 gulp.task('watch', function(){
   gulp.watch(paths.sourcefiles, ['dist']);
   gulp.watch(paths.transitionsSrc, ['sass']);
+  gulp.watch(paths.stylesSrc, ['sass']);
 });
 
 gulp.task('minor', function(){
