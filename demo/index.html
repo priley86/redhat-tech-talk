@@ -3,10 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>web-presentation demo</title>
+  <link rel="stylesheet" href="reset.css" charset="utf-8">
   <link rel="stylesheet" href="styles.css" charset="utf-8">
   <link rel="stylesheet" href="transitions.css" media="screen" charset="utf-8">
   <link rel="import" href="web-presentation.html">
+  <link rel="stylesheet" href="timeline.css" charset="utf-8">
   <link rel='import' href='https://cdn.rawgit.com/ChristianKohler/PrismComponents/master/dist/prism-components.html'>
+  <script src="https://use.fontawesome.com/da88d1f637.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="timeline.js"></script>
 </head>
 <body>
   <web-presentation>
@@ -18,27 +23,177 @@
       <h1>&lt;&nbsp;web-components&nbsp;&gt;</h1>
       <img src="img/spock.gif" alt="spock">
       <p>Triangle JS Meetup, September 2016</p>
-
       <div class="stars"></div>
       <div class="twinkling"></div>
       <div class="clouds"></div>
     </web-slide-title>
 
-    <web-slide data-transition="fadeIn">
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
       <h1>Starting the web component voyage...</h1>
       <h2>Hello, we're members of Red Hat's Patternfly team.</h2>
       <p><b>Patternfly</b> is an open source community of designers and developers.</p>
       <h2>We're interested in web components.</h2>
       <p>We think the DOM is the original platform and have started exploring web components in our framework patterns.</p>
-      <div class="flex-icons">
+      <div class="flex">
         <img src="img/redhat.png" alt="redhat" width="150" height="50">
         <img class="patternfly-img" src="img/patternfly.svg" alt="patternfly" width="150" height="40">
-        <img src="img/uxd.png" alt="uxd" width="130" height="130">
+        <img src="img/uxd.svg" alt="uxd" width="130" height="130">
       </div>
     </web-slide>
 
-    <web-slide data-transition="moveToLeft">
-      <h1>Features</h1>
+    <web-slide class="clear-bg about-us" data-transition="moveFromBottom">
+      <h1>About Us...</h1>
+      <div class="flex profiles">
+        <div>
+          <h2>Leslie Hinson</h2>
+          <p>Product Owner</p>
+          <a href="https://twitter.com/patternflygirl">https://twitter.com/patternflygirl</a>
+          <br>
+          <br>
+          <div>
+            <i class="fa fa-github" aria-hidden="true"></i> lhinson
+          </div>
+          <br/>
+          <img src="img/leslie.jpeg" width="160" height="160">
+        </div>
+        <div>
+          <h2>Andres Galante</h2>
+          <p>Designer & Developer</p>
+          <a href="http://blog.andresgalante.com/">http://blog.andresgalante.com/</a>
+          <br>
+          <br>
+          <div>
+            <i class="fa fa-github" aria-hidden="true"></i> andresgalante
+          </div>
+          <br/>
+          <img src="img/andres.jpeg" width="160" height="160">
+        </div>
+        <div>
+          <h2>Patrick Riley</h2>
+          <p>Developer</p>
+          <a href="http://patrickmriley.net/">http://patrickmriley.net/</a>
+          <br/>
+          <br/>
+          <div>
+            <i class="fa fa-github" aria-hidden="true"></i> priley86
+          </div>
+          <br/>
+          <img src="img/patrick.jpeg" width="160" height="160">
+        </div>
+      </div>
+    </web-slide>
+
+    <web-slide>
+      <h1>History</h1>
+      <iframe src="timeline/index.html" width="600" height="400" frameBorder="0"></iframe>
+    </web-slide>
+
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>The basics...</h1>
+      <h2>Custom Elements</h2>
+      <p>Browser APIs to define new HTML elements</p>
+      <h2>Shadow DOM</h2>
+      <p>Encapsulated DOM and styling</p>
+      <h2>HTML Imports</h2>
+      <p>Declarative methods of importing HTML documents into other documents</p>
+      <h2>HTML Templates</h2>
+      <p>The &lt;template&gt; tag now allows documents to contain inert chunks of DOM</p>
+    </web-slide>
+
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>Custom Elements</h1>
+      <p>Define new elements with the <b>customElements</b> global.</p>
+      <pre is="lang-javascript" theme="dark">
+/* my-element.js */
+class MyElement extends HTMLElement {
+  // This gets called when the HTML parser sees your tag
+  constructor() {
+    super(); // always call super() first in the ctor.
+    this.msg = 'Hello, World!';
+  }
+  // Called when your element is inserted in the DOM or
+  // immediately after the constructor if it’s already in the DOM
+  connectedCallback() {
+    this.innerHTML = `<p>${this.msg}</p>`;
+  }
+}
+// This registers your new tag and associates it with your class
+window.customElements.define('my-element', MyElement);
+      </pre>
+    </web-slide>
+
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>Custom Elements</h1>
+      <p>You can also extend native HTML elements. The primary benefit is to gain all of their features
+      (things like <b>DOM properties, methods, and accessibility features</b>).</p>
+      <pre is="lang-javascript" theme="dark">
+class FancyButton extends HTMLButtonElement {
+  constructor() {
+    super();
+    this.addEventListener('click', e => this.drawRipple(e.offsetX, e.offsetY));
+  }
+  // Material design ripple animation.
+  drawRipple(x, y) {
+    let div = document.createElement('div');
+    div.classList.add('ripple');
+    this.appendChild(div);
+    div.style.top = `${y - div.clientHeight/2}px`;
+    div.style.left = `${x - div.clientWidth/2}px`;
+    div.style.backgroundColor = 'currentColor';
+    div.classList.add('run');
+    div.addEventListener('transitionend', e => div.remove());
+  }
+}
+customElements.define('fancy-button', FancyButton, {extends: 'button'});
+      </pre>
+    </web-slide>
+
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>Custom Elements</h1>
+      <p>Consumers can utilize the element by declaring it in their <b>HTML</b>:</p>
+      <pre is="lang-markup" theme="dark">
+&lt;button is="fancy-button" disabled&gt;Fancy button!&lt;/button&gt;
+      </pre>
+      <p>or by creating an instance in <b>Javascript</b>:</p>
+      <pre is="lang-javascript" theme="dark">
+let button = document.createElement('button', {is: 'fancy-button'});
+button.textContent = 'Fancy button!';
+button.disabled = true;
+document.body.appendChild(button);
+      </pre>
+      <p>or using the <b>new</b> operator:</p>
+      <pre is="lang-javascript" theme="dark">
+let button = new FancyButton();
+button.textContent = 'Fancy button!';
+button.disabled = true;
+document.body.appendChild(button);
+      </pre>
+    </web-slide>
+
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>Shadow DOM</h1>
+      <p>A new way to encapsulate styles for your custom element, giving you fine grained control on what </p>
+      <pre is="lang-javascript" theme="dark">
+/* my-element.js */
+class MyElement extends HTMLElement {
+  // This gets called when the HTML parser sees your tag
+  constructor() {
+    super(); // always call super() first in the ctor.
+    this.msg = 'Hello, World!';
+  }
+  // Called when your element is inserted in the DOM or
+  // immediately after the constructor if it’s already in the DOM
+  connectedCallback() {
+    this.innerHTML = `<p>${this.msg}</p>`;
+  }
+}
+// This registers your new tag and associates it with your class
+window.customElements.define('my-element', MyElement);
+      </pre>
+    </web-slide>
+
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>The basics...</h1>
       <h2>Fast</h2>
       <p>Web components are native</p>
       <h2>No 3rd party dependencies</h2>
@@ -48,7 +203,7 @@
       <p>You can customize web-presentation tags like you would with any other html tag.</p>
     </web-slide>
 
-    <web-slide data-transition="moveToLeft">
+    <web-slide class="green-bg" data-transition="moveToLeft">
       <h1>Fragments</h1>
       <h2>Step by step</h2>
       <div>
@@ -73,7 +228,7 @@
       </div>
     </web-slide>
 
-    <web-slide data-transition="fall">
+    <web-slide class="blue-bg" data-transition="fall">
       <h1>Getting started</h1>
       <h2>Link one file and start creating your presentation</h2>
       <p>To get started just include web-presentation.html in your header.</p>
@@ -83,7 +238,7 @@
       </pre>
     </web-slide>
 
-    <web-slide data-transition="newspaper">
+    <web-slide class="blue-bg" data-transition="newspaper">
       <h1>Transitions</h1>
       <p>
         web-presentation comes with great transitions out of the box.
@@ -97,7 +252,7 @@
       </pre>
     </web-slide>
 
-    <web-slide>
+    <web-slide class="teal-bg">
       <h1>Let's get started.</h1>
       <a href="https://github.com/ChristianKohler/web-presentation">https://github.com/ChristianKohler/web-presentation</a>
     </web-slide>

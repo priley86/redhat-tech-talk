@@ -29,19 +29,19 @@ web-slide:not(:last-child)::shadow div#content {
   text-align: initial;
   padding: 20px; }
 
-web-slide:nth-of-type(1) {
+web-slide.clear-bg {
   background: #fafafa; }
 
-web-slide:nth-of-type(2) {
+web-slide.orange-bg {
   background: #fdc162; }
 
-web-slide:nth-of-type(3) {
+web-slide.green-bg {
   background: #60d7a9; }
 
-web-slide:nth-of-type(4) {
+web-slide.blue-bg {
   background: #7bb7fa; }
 
-web-slide:nth-of-type(5) {
+web-slide.teal-bg {
   background: #0ac2d2; }
 
 pre {
@@ -133,12 +133,21 @@ pre {
     transform: translate3d(80px, 10px, 0px); } }
 
 /* icons */
-.flex-icons {
+.flex {
   display: flex;
   justify-content: space-between;
   align-items: center; }
 
+/*Starting slide*/
 img.patternfly-img {
   background-color: black;
   padding: 10px;
   border-radius: 10px; }
+
+/*History slide*/
+/*About Us slide*/
+.about-us img {
+  border-radius: 10px; }
+
+.about-us a {
+  font-size: .7em; }
