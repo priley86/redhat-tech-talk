@@ -38,16 +38,16 @@ web-slide {
     background: #fafafa;
   }
   &.orange-bg {
-    background: #fdc162;
+    background: #ffece0;
   }
   &.green-bg {
-    background: #60d7a9;
+    background: #c6f0e0;
   }
   &.blue-bg {
-    background: #7bb7fa;
+    background: #deedfe;
   }
-  &.teal-bg {
-    background: #0ac2d2;
+  &.purple-bg {
+    background: #f6eefb;
   }
 }
 
@@ -157,6 +157,11 @@ pre {
   align-items: center;
 }
 
+.source {
+  text-align: center;
+  font-size: .9em;
+}
+
 /*Starting slide*/
 img.patternfly-img {
   background-color: black;
@@ -164,13 +169,26 @@ img.patternfly-img {
   border-radius: 10px;
 }
 
-/*History slide*/
-
-
 /*About Us slide*/
 .about-us img {
   border-radius: 10px;
 }
 .about-us a {
   font-size: .7em;
+}
+
+/*Frameworks slide*/
+.frameworks {
+  margin: auto;
+}
+.frameworks td {
+  padding: 0 30px;
+  text-align: center;
+}
+.frameworks td a {
+  font-size: .8em;
+}
+.frameworks td img {
+  width: 75px;
+  height: 75px;
 }

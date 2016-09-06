@@ -18,6 +18,7 @@
     <web-presentation-progress></web-presentation-progress>
     <web-presentation-keyboardcontrols></web-presentation-keyboardcontrols>
 
+    <!-- Live Long and Prosper -->
     <web-slide-title data-transition="moveFromBottom">
       <h2>Live Long and Prosper with...</h2>
       <h1>&lt;&nbsp;web-components&nbsp;&gt;</h1>
@@ -28,6 +29,7 @@
       <div class="clouds"></div>
     </web-slide-title>
 
+    <!-- Starting the voyage -->
     <web-slide class="clear-bg" data-transition="moveFromBottom">
       <h1>Starting the web component voyage...</h1>
       <h2>Hello, we're members of Red Hat's Patternfly team.</h2>
@@ -41,6 +43,7 @@
       </div>
     </web-slide>
 
+    <!-- About Us -->
     <web-slide class="clear-bg about-us" data-transition="moveFromBottom">
       <h1>About Us...</h1>
       <div class="flex profiles">
@@ -83,23 +86,58 @@
       </div>
     </web-slide>
 
-    <web-slide>
-      <h1>History</h1>
+    <!-- History -->
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
+      <h1>Web Components, a timeline...</h1>
       <iframe src="timeline/index.html" width="600" height="400" frameBorder="0"></iframe>
     </web-slide>
 
+    <!-- Browser Support1 -->
+    <web-slide class="clear-bg" data-transition="newspaper">
+      <h1>Ok...let's talk about browser support</h1>
+      <br/>
+      <img src="img/browser-support.png"/>
+      <br/>
+      <div class="source">
+        Source: <a href="http://webcomponents.org/">http://webcomponents.org/</a>
+      </div>
+    </web-slide>
+
+    <!-- Browser Support2 -->
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
+      <h1>Polyfills to the rescue!</h1>
+      <br/>
+      <img src="img/polyfill-support.png" width="552" height="152"/>
+      <br/>
+      <div class="source">
+        Source: <a href="https://github.com/webcomponents/webcomponentsjs">https://github.com/webcomponents/webcomponentsjs</a>
+      </div>
+      <br/>
+      <ul>
+        <li>The <a href="https://github.com/webcomponents/webcomponentsjs#limited-css-encapsulation-">shadow DOM polyfill</a> <b>can't</b> prevent document styles from leaking into shadow roots. It does, however, encapsulate styles within shadow roots.</li>
+        <li>Polyfilling shadow DOM is hard, so the shadow DOM polyfill is robust, invasive, and slow.
+          <ul>
+            <li>The <b>shady DOM</b> shim in Polymer makes this more palatable now. </li>
+          </ul>
+        </li>
+        <li>Apple to release native Shadow DOM support in Safari 10 this Fall.</li>
+      </ul>
+    </web-slide>
+
+    <!-- The Basics-->
     <web-slide class="green-bg" data-transition="moveToLeft">
       <h1>The basics...</h1>
       <h2>Custom Elements</h2>
       <p>Browser APIs to define new HTML elements</p>
+      <h2>HTML Templates</h2>
+      <p>The <b>&lt;template&gt;</b> tag now allows documents to contain inert chunks of DOM</p>
       <h2>Shadow DOM</h2>
       <p>Encapsulated DOM and styling</p>
       <h2>HTML Imports</h2>
       <p>Declarative methods of importing HTML documents into other documents</p>
-      <h2>HTML Templates</h2>
-      <p>The &lt;template&gt; tag now allows documents to contain inert chunks of DOM</p>
     </web-slide>
 
+    <!-- Custom Elements, 1-->
     <web-slide class="green-bg" data-transition="moveToLeft">
       <h1>Custom Elements</h1>
       <p>Define new elements with the <b>customElements</b> global.</p>
@@ -122,6 +160,7 @@ window.customElements.define('my-element', MyElement);
       </pre>
     </web-slide>
 
+    <!-- Custom Elements, 2-->
     <web-slide class="green-bg" data-transition="moveToLeft">
       <h1>Custom Elements</h1>
       <p>You can also extend native HTML elements. The primary benefit is to gain all of their features
@@ -148,6 +187,7 @@ customElements.define('fancy-button', FancyButton, {extends: 'button'});
       </pre>
     </web-slide>
 
+    <!-- Custom Elements, 3-->
     <web-slide class="green-bg" data-transition="moveToLeft">
       <h1>Custom Elements</h1>
       <p>Consumers can utilize the element by declaring it in their <b>HTML</b>:</p>
@@ -170,93 +210,229 @@ document.body.appendChild(button);
       </pre>
     </web-slide>
 
+    <!-- Templates -->
+    <web-slide class="green-bg" data-transition="moveToLeft">
+      <h1>HTML Templates</h1>
+      <p>The <b>&lt;template&gt;</b> element allows you to declare fragments of DOM which are parsed, inert at page load, and can be activated later at runtime.</p>
+      <pre is="lang-markup" theme="dark">
+  &lt;template id="element-template"&gt;
+    &lt;style&gt;
+      p { color: orange; }
+    &lt;/style&gt;
+    &lt;p&gt;I'm in Shadow DOM. My markup was stamped from a &lt;template&gt;.&lt;/p&gt;
+  &lt;/template &gt;
+      </pre>
+    </web-slide>
+
+    <!-- Shadow DOM -->
     <web-slide class="green-bg" data-transition="moveToLeft">
       <h1>Shadow DOM</h1>
-      <p>A new way to encapsulate styles for your custom element, giving you fine grained control on what </p>
+      <p>A new way to encapsulate styles for your custom element, giving you functional boundaries between DOM subtrees.</p>
       <pre is="lang-javascript" theme="dark">
-/* my-element.js */
-class MyElement extends HTMLElement {
-  // This gets called when the HTML parser sees your tag
-  constructor() {
-    super(); // always call super() first in the ctor.
-    this.msg = 'Hello, World!';
+(function(){
+  let elementTemplate = doc.querySelector('.element-template');
+  class MyElement extends HTMLElement {
+    attachedCallback() {
+      /* Create a new Shadow Root for your element */
+      this.createShadowRoot();
+
+      /* append your element's template */
+      this.shadowRoot.appendChild(document.importNode(elementTemplate.content, true));
+    }
   }
-  // Called when your element is inserted in the DOM or
-  // immediately after the constructor if it’s already in the DOM
-  connectedCallback() {
-    this.innerHTML = `<p>${this.msg}</p>`;
-  }
-}
-// This registers your new tag and associates it with your class
-window.customElements.define('my-element', MyElement);
+})();
       </pre>
     </web-slide>
 
+    <!-- HTML Imports -->
     <web-slide class="green-bg" data-transition="moveToLeft">
-      <h1>The basics...</h1>
-      <h2>Fast</h2>
-      <p>Web components are native</p>
-      <h2>No 3rd party dependencies</h2>
-      <p>Written in pure javascript</p>
-      <h2>Extendable and customizable</h2>
-      <p>Thanks to a modular architecture. The keyboard controls for example are not part of the core.</p>
-      <p>You can customize web-presentation tags like you would with any other html tag.</p>
-    </web-slide>
-
-    <web-slide class="green-bg" data-transition="moveToLeft">
-      <h1>Fragments</h1>
-      <h2>Step by step</h2>
-      <div>
-        <p>
-          <span data-enter="1">Fragments are a very easy way</span>
-          <span data-enter="2">to display parts</span>
-          <span data-enter="2">of a slide</span>
-          <span data-enter="3">step by step.</span></p>
-          <pre data-enter="4" is="lang-markup" theme="dark">
-&lt;span data-enter="1"&gt;Fragments are a very easy way&lt;span&gt;
-&lt;span data-enter="2"&gt;to display parts&lt;span&gt;
-&lt;span data-enter="2"&gt;of a slide&lt;span&gt;
-&lt;span data-enter="3"&gt;step by step.&lt;span&gt;
-          </pre>
-      </div>
-
-      <div data-enter="5">
-        <p>..or to hide</p>
-        <pre data-exit="11" is="lang-markup" theme="dark">
-&lt;h1 data-exit="10"&gt;Great!!&lt;h1&gt;
-        </pre>
-      </div>
-    </web-slide>
-
-    <web-slide class="blue-bg" data-transition="fall">
-      <h1>Getting started</h1>
-      <h2>Link one file and start creating your presentation</h2>
-      <p>To get started just include web-presentation.html in your header.</p>
-      <p>Use the web-presentation and web-slide tags to build your slide.</p>
+      <h1>HTML Imports</h1>
+      <p>Provide a new means to include HTML documents inside other documents. Now you can load your component's HTML, JS, and CSS in a single file.</p>
+      <h2>Why do we need them?</h2>
+      <ul>
+        <li><b>&lt;iframe&gt;</b>s are difficult to style, frustrating to script with, and don't give us the same context.</li>
+        <li><b>AJAX</b> loading everything in large bundles & minified scripts just feels wrong. It doesn't give us composable pieces and makes dependency trees way too complicated.</li>
+        <li>Approaching <b>HTTP/2</b> standards and <b>server push</b> are a perfect fit for HTML Imports. </li>
+      </ul>
       <pre is="lang-markup" theme="dark">
-  &lt;link rel="import" href="web-presentation.html"&gt;
+&lt;head&gt;
+  &lt;link rel="import" href="/path/to/imports/my-element.html"&gt;
+&lt;/head&gt;
       </pre>
     </web-slide>
 
-    <web-slide class="blue-bg" data-transition="newspaper">
-      <h1>Transitions</h1>
-      <p>
-        web-presentation comes with great transitions out of the box.
-      </p>
-      <h2>Usage</h2>
-      <p>
-        Just set the transition attribute on a slide
-      </p>
-      <pre is="lang-markup" theme="dark">
-  &lt;web-slide data-transition="moveToLeft"&gt;
-      </pre>
+    <!-- Fascinating! -->
+    <web-slide-title data-transition="fadeInFromBottom">
+      <h1>Fascinating!</h1>
+      <br>
+      <br>
+      <br>
+      <img src="img/spock-zoom.gif" alt="spock">
+      <div class="stars"></div>
+      <div class="twinkling"></div>
+      <div class="clouds"></div>
+    </web-slide-title>
+
+    <!-- Frameworks -->
+    <web-slide class="blue-bg" data-transition="fadeInFromBottom">
+      <h1>So where can I find web components?</h1>
+      <p>Here's a few places...</p>
+      <table class="frameworks">
+        <tr>
+          <td>
+            <h3>React</h3>
+            <a href="https://github.com/PixelsCommander/ReactiveElements">Reactive Elements</a>
+            <br/>
+            <br/>
+            <img src="img/react.png">
+          </td>
+          <td>
+            <h3>Angular</h3>
+            <a href="https://angular.io">Angular2</a>
+            <br>
+            <br/>
+            <img src="img/angular2.png">
+          </td>
+          <td>
+            <h3>Polymer</h3>
+            <a href="https://www.polymer-project.org/1.0/">Polymer Elements</a>
+            <br/>
+            <br/>
+            <img src="img/polymer.png">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Onsen UI</h3>
+            <a href="https://onsen.io/">Onsen Elements</a>
+            <br/>
+            <br/>
+            <img src="img/onsen.png">
+          </td>
+          <td>
+            <h3>X-Tags</h3>
+            <a href="https://x-tag.github.io">X-Tags Elements</a>
+            <br>
+            <br/>
+            <img src="img/x-tags.png">
+          </td>
+          <td>
+            <h3>Bosonic</h3>
+            <a href="http://bosonic.github.io/">Bosonic Elements</a>
+            <br/>
+            <br/>
+            <img src="img/bosonic.png">
+          </td>
+        </tr>
+      </table>
     </web-slide>
 
-    <web-slide class="teal-bg">
-      <h1>Let's get started.</h1>
-      <a href="https://github.com/ChristianKohler/web-presentation">https://github.com/ChristianKohler/web-presentation</a>
+    <web-slide class="blue-bg" data-transition="fadeInFromBottom">
+      <h1>Frameworks are great but...</h1>
+      <p>Frameworks often provide opinionated solutions for common problems. Most of the time frameworks will save you a great deal of effort.</p>
+      <h2>Framework Commonalities</h2>
+      <ul>
+        <li>Provide common methods for data binding</li>
+        <li>Provide ways to observe changes to data or state, typically via the Observer pattern</li>
+        <li>Give you patterns for handling and firing events</li>
+        <li>Often provide a means to handle url routing</li>
+        <li>Provide a common set of widgets and components</li>
+      </ul>
     </web-slide>
 
+    <web-slide class="blue-bg" data-transition="fadeInFromBottom">
+      <h1>The Case for Custom Elements</h1>
+      <p>One of the best parts about web components is their inherent ability to be extended and reused in a variety of situations.
+        Web component <b>flexibility</b> and <b>interoperability</b> has been a key area of research for us...
+      </p>
+      <p>Let's take a look under the hood and see if we can't mimic these frameworks in our own components with some <b>good old fashioned javascript.</b></p>
+      <h2>When to Roll Your Own</h2>
+      <p>Writing your own components makes a good deal of sense if you find yourself doing the following:</p>
+      <ul>
+        <li>Writing a common set of <b>customized widgets or components</b> you'd like to implement <b>across frameworks</b></li>
+        <li>Providing a common set of <b>behaviors or animations</b> that are not provided in the framework</li>
+        <li>Extending <b>native elements</b></li>
+      </ul>
+    </web-slide>
+
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Data Binding</h1>
+      <p>Data binding with native js examples...</p>
+    </web-slide>
+
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Observables & the Observer Pattern</h1>
+      <p>Observers with native js examples...</p>
+    </web-slide>
+
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Mutation Observers</h1>
+      <p>Mutation observers...</p>
+    </web-slide>
+
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Events</h1>
+      <p>Custom events...</p>
+    </web-slide>
+
+    <web-slide class="clear-bg" data-transition="fadeIn">
+      <h1>Oh yes! Demos...</h1>
+      <h2>The Pf-Tabs Component</h2>
+      <p>A full fledged component, ready for a variety of solutions.</p>
+      <ul>
+        <li><a href="https://plnkr.co/edit/OkrCvP?p=preview">https://plnkr.co/edit/OkrCvP?p=preview</a></li>
+        <li><a href="https://github.com/priley86/pf-tabs-demo">https://github.com/priley86/pf-tabs-demo</a></li>
+      </ul>
+      <h2>Web Component / Angular2 / React Interop</h2>
+      <p>Some more interoperability with web components...</p>
+      <ul>
+        <li><a href="https://plnkr.co/edit/1qsyD5?p=preview">https://plnkr.co/edit/1qsyD5?p=preview</a></li>
+      </ul>
+    </web-slide>
+
+    <web-slide class="purple-bg" data-transition="moveFromTop">
+      <h1>Getting Ready for Production</h1>
+      <h2>The P.R.P.L. Pattern</h2>
+      <p>Requires the use of HTTP/2 Server and Server Push</p>
+      <ul>
+        <li>Push critical resources for the initial route</li>
+        <li>Render initial route</li>
+        <li>Pre-cache remaining routes (via <b>service workers</b>) </li>
+        <li>Lazy-load and create remaining routes on demand</li>
+      </ul>
+      <p>See the <a href="https://github.com/Polymer/shop">Polymer Shop App</a>. Link to app <a href="https://shop.polymer-project.org/">demo</a>.</p>
+      <h2>Vulcanize</h2>
+      <p>If you can't use an HTTP/2 enabled server, look to <a href="https://github.com/Polymer/vulcanize">vulcanize</a> your component assets.</p>
+      <ul>
+        <li>build tool for web components (can be used alongside <b>gulp, grunt, or webpack</b>)</li>
+        <li>reduces an HTML file and it's dependent HTML Imports into one file</li>
+        <li>follows HTML Imports and inlines them in a single page for production</li>
+      </ul>
+    </web-slide>
+
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
+      <h1>Thanks!</h1>
+      <p>The Patternfly team would like to thank...</p>
+      <ul>
+        <li>@RedHatUXD, Red Hat</li>
+        <li>@trianglejs, Triangle JS</li>
+        <li>@rob_dodson, Google</li>
+      </ul>
+      <img style="margin:auto;" src="img/clapping.gif" width="200" height="200">
+    </web-slide>
+
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
+      <h1>Questions?</h1>
+      <h2>Further Resources</h2>
+      <ul>
+        <li><a href="http://webcomponents.org">WebComponents.org</a></li>
+        <li><a href="https://customelements.io">CustomElements.io</a></li>
+        <li><a href="https://www.polymer-project.org/1.0/start">Polymer, Getting Started</a></li>
+        <li><a href="http://www.html5rocks.com/en/tutorials">http://www.html5rocks.com/en/tutorials</a></li>
+        <li><a href="https://www.youtube.com/watch?v=J4i0xJnQUzU">Google I/O Progressive Web Apps with Polymer</a></li>
+      </ul>
+    </web-slide>
+    <!-- End -->
     <web-slide-title data-transition="fadeInFromBottom">
       <h2>Lastly, just remember to...</h2>
       <h1>&lt;&nbsp;web-component&nbsp;&gt;</h1>
