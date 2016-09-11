@@ -157,6 +157,12 @@ pre {
   align-items: center;
 }
 
+.flex-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .source {
   text-align: center;
   font-size: .9em;
@@ -191,4 +197,23 @@ img.patternfly-img {
 .frameworks td img {
   width: 75px;
   height: 75px;
+}
+
+/*Blockquotes*/
+blockquote {
+  background: #E8E8E8;
+  border-left: 5px solid #ccc;
+  margin: 0.1em 10px;
+  padding: 0.5em 10px;
+  quotes: '“' '”';
+}
+blockquote:before {
+  color: #ccc;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote:first-of-type {
+  margin-top: 0;
 }

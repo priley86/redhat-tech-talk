@@ -86,6 +86,44 @@
       </div>
     </web-slide>
 
+    <!-- Why Components -->
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
+      <h1>Why components?</h1>
+      <ul>
+        <li>Web standards and browsers are evolving, so should we.</li>
+        <li>Reusing components from different frameworks is challenging, but it shouldn't be.</li>
+        <li>The jQuery story is ending...we can build better plugins now.</li>
+        <li>They make excellent leaf nodes, and be dropped in other framework components like DOM.</li>
+      </ul>
+
+      <h2>Web components are...</h2>
+      <ul>
+        <li><b>Composable:</b> combine them together creating new experiences.</li>
+        <li><b>Encapsulated:</b> isolate markup, styles, and behavior.</li>
+        <li><b>Reusable:</b> can be extended, allowing you easily create new components from existing ones.</li>
+      </ul>
+    </web-slide>
+
+    <!-- Myths -->
+    <web-slide class="clear-bg" data-transition="moveFromBottom">
+      <h1>Myths</h1>
+      <br/>
+      <div class="flex-center">
+        <div>
+          <blockquote>"Web components won't work with framework X..."</blockquote>
+          <blockquote>"I have to use Shadow DOM..."</blockquote>
+          <blockquote>"Web components require me to change my build..."</blockquote>
+          <blockquote>"Web components aren't compatible with JSX..."</blockquote>
+          <blockquote>"Web components can't be rendered server side..." <br/>
+            <a style="font-size: .7em;" href="https://pimterry.github.io/server-components">https://pimterry.github.io/server-components</a>
+          </blockquote>
+        </div>
+        <div>
+          <img style="margin:auto;" src="img/laugh.gif" width="266" height="200">
+        </div>
+      </div>
+    </web-slide>
+
     <!-- History -->
     <web-slide class="clear-bg" data-transition="moveFromBottom">
       <h1>Web Components, a timeline...</h1>
@@ -327,6 +365,7 @@ document.body.appendChild(button);
       </table>
     </web-slide>
 
+    <!-- Frameworks pt 2 -->
     <web-slide class="blue-bg" data-transition="fadeInFromBottom">
       <h1>Frameworks are great but...</h1>
       <p>Frameworks often provide opinionated solutions for common problems. Most of the time frameworks will save you a great deal of effort.</p>
@@ -340,6 +379,7 @@ document.body.appendChild(button);
       </ul>
     </web-slide>
 
+    <!-- The Case for CEs -->
     <web-slide class="blue-bg" data-transition="fadeInFromBottom">
       <h1>The Case for Custom Elements</h1>
       <p>One of the best parts about web components is their inherent ability to be extended and reused in a variety of situations.
@@ -355,26 +395,183 @@ document.body.appendChild(button);
       </ul>
     </web-slide>
 
-    <web-slide class="orange-bg" data-transition="fadeInFromTop">
-      <h1>Data Binding</h1>
-      <p>Data binding with native js examples...</p>
-    </web-slide>
-
-    <web-slide class="orange-bg" data-transition="fadeInFromTop">
-      <h1>Observables & the Observer Pattern</h1>
-      <p>Observers with native js examples...</p>
-    </web-slide>
-
-    <web-slide class="orange-bg" data-transition="fadeInFromTop">
-      <h1>Mutation Observers</h1>
-      <p>Mutation observers...</p>
-    </web-slide>
-
+    <!-- Events -->
     <web-slide class="orange-bg" data-transition="fadeInFromTop">
       <h1>Events</h1>
-      <p>Custom events...</p>
+      <p>Javascript's <b>CustomEvent</b> interface can be used to pass messages from your custom element to the outside world.</p>
+      <pre is="lang-javascript" theme="dark">
+// fires when our element is attached to the DOM
+attachedCallback() {
+  this.addEventListener('click', (e) => {
+    var eventObj = new CustomEvent('selected', {
+      detail: this.username
+    });
+    // fire custom event
+    this.dispatchEvent(eventObj);
+  });
+}
+      </pre>
+      <h2>Example:</h2>
+      <ul>
+        <li><a href="https://plnkr.co/edit/1qsyD5?p=preview">https://plnkr.co/edit/1qsyD5?p=preview</a></li>
+      </ul>
     </web-slide>
 
+    <!-- Data Binding -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Data Binding</h1>
+      <p>To emulate two way binding in your component, simply use <b>Object.defineProperty</b>.</p>
+<pre is="lang-javascript" theme="dark">
+/* Creates a property for two-way binding */
+bindProperty(obj, property, domElem, domProp) {
+  Object.defineProperty(obj, property, {
+    get: function() { return domElem[domProp]; },
+    set: function(newValue) { domElem[domProp] = newValue; },
+    configurable: true
+  });
+}
+</pre>
+      <h2>Example:</h2>
+      <ul>
+        <li><a href="http://jsfiddle.net/v2bw6658/6/">http://jsfiddle.net/v2bw6658/6/</a></li>
+        <li><a href="https://plnkr.co/edit/UXQr38?p=preview">https://plnkr.co/edit/UXQr38?p=preview</a></li>
+      </ul>
+      <p>Polymer <a href="https://github.com/Polymer/polymer/blob/master/src/lib/bind/accessors.html#L161">data binding</a> (under the hood)</p>
+    </web-slide>
+
+    <!-- Observables -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>The Observer Pattern</h1>
+      <p>Defines a one-to-many dependency between objects so that when one object changes state, all dependents are notified and updated automatically.</p>
+      <pre is="lang-javascript" theme="dark">
+function observable(value) {
+  var listeners = [];
+  function notify(newValue) {
+    listeners.forEach(function(listener){ listener(newValue); });
+  }
+  function accessor(newValue) {
+    if (arguments.length && newValue !== value) {
+      value = newValue;
+      notify(newValue);
+    }
+    return value;
+  }
+  accessor.subscribe = function(listener) { listeners.push(listener); };
+  return accessor;
+}
+      </pre>
+      <div class="source">
+        Source: <a href="https://gist.github.com/austinhyde/4321f22a476e1cbee65f">https://gist.github.com/austinhyde/4321f22a476e1cbee65f</a>
+      </div>
+    </web-slide>
+
+    <!-- Observables 2 -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>The Observer Pattern (cont.)</h1>
+      <pre is="lang-javascript" theme="dark">
+var a = observable(3), b = observable(2);
+var c = observable(a() + b());
+
+a.subscribe(function(){ c(a() + b()); });
+b.subscribe(function(){ c(a() + b()); });
+
+console.log(c()); // 5
+a(10);
+console.log(c()); // 12
+b(7);
+console.log(c()); // 17
+      </pre>
+      <h2>Example:</h2>
+      <ul><li><a href="https://jsfiddle.net/patrickriley/0wcvhkt4/30/">https://jsfiddle.net/patrickriley/0wcvhkt4/30/</a></li></ul>
+      <p><a href="http://blog.angular-university.io/functional-reactive-programming-for-angular-2-developers-rxjs-and-observables/">Angular2 Observers/EventEmitters</a> in
+        <a href="http://reactivex.io/">RxJS</a> and <a href="http://andrewhfarmer.com/component-communication/">React Observers in Flux</a> (observers also used in
+        <a href="http://redux.js.org/">Redux</a>)</p>
+    </web-slide>
+
+    <!-- Mutation Observers -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Mutation Observers</h1>
+      <p>Easily observe changes in your custom element's DOM.</p>
+      <pre is="lang-javascript" theme="dark">
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (mutation.type === 'childList') {
+      /* handle child mutations */
+    }
+    if (mutation.type === 'attributes') {
+      /* handle attribute mutations */
+    }
+    if (mutation.type === 'characterData') {
+      /* handle data mutations */
+    }
+  });
+});
+/* instantiate observer on your custom element (this) or a nested element */
+observer.observe(this, {
+  attributes: true,
+  childList: true,
+  characterData: true
+ });
+      </pre>
+    </web-slide>
+
+    <!-- Mutation Observers (cont) -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Mutation Observers (cont.) </h1>
+      <p>Mutation Observers replace the need for Mutation Events and deliver mutations in batches asynchronously.</p>
+      <h2>Example:</h2>
+      <ul>
+        <li><a href="https://plnkr.co/edit/OkrCvP?p=preview">https://plnkr.co/edit/OkrCvP?p=preview</a></li>
+      </ul>
+      <p>Mutation observer polyfill for IE9+ (now included in <b>webcomponents.js</b>):</p>
+      <a href="https://github.com/Polymer/MutationObservers">https://github.com/Polymer/MutationObservers</a>
+      <h2>Framework Uses</h2>
+      <ul>
+        <li><b>Polymer.dom(node).observeNodes(callback)</b> <a href="http://goo.gl/tTTYBo">http://goo.gl/tTTYBo</a></li>
+        <li>Used widely in Custom Elements / HTML Imports <a href="https://github.com/webcomponents/webcomponentsjs/tree/master/src">source</a></li>
+        <li>Angular2 handles this using <a href="http://blog.angular-university.io/how-does-angular-2-change-detection-really-work/">Zone.js & Native Api overrides</a> instead</li>
+      </ul>
+    </web-slide>
+
+    <!-- Virtual DOM (cont) -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>About Virtual DOM... </h1>
+      <h2>React uses Virtual DOM</h2>
+      <p>React uses a very efficient "diffing" algorithm for mutating the DOM only when necessary. It creates a lightweight tree from Javascript objects that mimic a <b>DOM</b> tree.</p>
+      <p>There are libraries which can help if you want to imitate Virtual DOM in custom elements.</p>
+      <ul>
+        <li>See Rob Dodson's recent <a href="https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133#.c8kkaeq1q">post</a> on using
+          <a href="https://github.com/tbranyen/diffhtml">diffhtml</a></li>
+        <li><a href="https://github.com/skatejs/skatejs">SkateJS</a> makes uses of Google's <a href="https://github.com/google/incremental-dom">Increment DOM</a></li>
+      </ul>
+    </web-slide>
+
+    <!-- Virtual DOM (cont) -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>About Virtual DOM...(cont.) </h1>
+      <pre is="lang-javascript" theme="dark">
+class CurrentTime extends HTMLElement {
+  constructor() {
+    super();
+    // Bind render to this instance so we
+    // can call it from within our template
+    this.render = this.render.bind(this);
+    this.render();
+  }
+  render() {
+    // Note the diff.html tagged template string
+    diff.innerHTML(this, diff.html`
+      &lt;button onclick="${this.render}"&gt;
+        Show current unix time
+      &lt;/button&gt;
+      <span>${Date.now()}</span>
+    `);
+  }
+}
+      </pre>
+    </web-slide>
+
+    <!-- The Gold Standard -->
     <web-slide class="orange-bg" data-transition="fadeInFromTop">
       <h1>The Gold Standard</h1>
       <p>A good checklist to review before submitting your web component...</p>
@@ -390,25 +587,27 @@ document.body.appendChild(button);
         <li>Is the styling <b>presentable, extendable, responsive</b>?</li>
         <li>Is the element <b>API</b> documented?</li>
         <li>Is the network and render <b>performance</b> efficient?</li>
-        <li>Are strings, currencies, dates <b>localizable</b>?</li>
+        <li>Are strings, currencies, and dates <b>localizable</b>?</li>
       </ul>
     </web-slide>
 
-    <web-slide class="clear-bg" data-transition="fadeIn">
+    <!-- Demos -->
+    <web-slide class="purple-bg" data-transition="fadeIn">
       <h1>Oh yes! Demos...</h1>
-      <h2>The Pf-Tabs Component</h2>
-      <p>A full fledged component, ready for a variety of solutions.</p>
+      <br/>
+      <p>Patternfly Pf-Tabs Component:</p>
       <ul>
-        <li><a href="https://plnkr.co/edit/OkrCvP?p=preview">https://plnkr.co/edit/OkrCvP?p=preview</a></li>
         <li><a href="https://github.com/priley86/pf-tabs-demo">https://github.com/priley86/pf-tabs-demo</a></li>
       </ul>
-      <h2>Web Component / Angular2 / React Interop</h2>
-      <p>Some more interoperability with web components...</p>
+      <p>Image Loader Component:</p>
       <ul>
-        <li><a href="https://plnkr.co/edit/1qsyD5?p=preview">https://plnkr.co/edit/1qsyD5?p=preview</a></li>
+        <li></li>
       </ul>
+
+      <img style="margin:auto;" src="img/shake.gif" width="293" height="125">
     </web-slide>
 
+    <!-- Production -->
     <web-slide class="purple-bg" data-transition="moveFromTop">
       <h1>Getting Ready for Production</h1>
       <h2>The P.R.P.L. Pattern</h2>
@@ -429,7 +628,8 @@ document.body.appendChild(button);
       </ul>
     </web-slide>
 
-    <web-slide class="clear-bg" data-transition="moveFromBottom">
+    <!-- Thanks -->
+    <web-slide class="purple-bg" data-transition="moveFromBottom">
       <h1>Thanks!</h1>
       <p>The Patternfly team would like to thank...</p>
       <ul>
@@ -437,37 +637,39 @@ document.body.appendChild(button);
         <li>@trianglejs, Triangle JS</li>
         <li>@rob_dodson, Google</li>
       </ul>
-      <img style="margin:auto;" src="img/clapping.gif" width="200" height="200">
+      <img style="margin:auto;" src="img/clapping.gif" width="266" height="200">
     </web-slide>
 
-    <web-slide class="clear-bg" data-transition="moveFromBottom">
+    <!-- Questions -->
+    <web-slide class="purple-bg" data-transition="moveFromBottom">
       <h1>Questions?</h1>
+      <h2>Come visit us!</h2>
+      <p>We'd be happy for you to join our Patternfly open source community.</p>
+      <ul>
+        <li><a href="http://www.patternfly.org/#_">http://www.patternfly.org</a></li>
+      </ul>
       <h2>Further Resources</h2>
       <ul>
         <li><a href="http://webcomponents.org">WebComponents.org</a></li>
         <li><a href="https://customelements.io">CustomElements.io</a></li>
+        <li><a href="https://component.kitchen/tutorial">Component Kitchen</a>
+          <ul>
+            <li><a href="https://github.com/basic-web-components/basic-web-components">Basic Components</a></li>
+          </ul>
+        </li>
         <li><a href="https://www.polymer-project.org/1.0/start">Polymer, Getting Started</a></li>
+        <li><a href="https://elements.polymer-project.org/">Polymer Elements</a></li>
         <li><a href="http://www.html5rocks.com/en/tutorials">http://www.html5rocks.com/en/tutorials</a></li>
         <li><a href="https://www.youtube.com/watch?v=J4i0xJnQUzU">Google I/O Progressive Web Apps with Polymer</a></li>
       </ul>
     </web-slide>
+
     <!-- End -->
     <web-slide-title data-transition="fadeInFromBottom">
-      <h2>Lastly, just remember to...</h2>
-      <h1>&lt;&nbsp;web-component&nbsp;&gt;</h1>
-      <div class="things-1">
-        <img class="things" src="img/all-the-things.png" alt="all the things">
-      </div>
-      <div class="things-2">
-        <img class="things" src="img/all-the-things.png" alt="all the things">
-      </div>
-      <div class="things-3">
-        <img class="things" src="img/all-the-things.png" alt="all the things">
-      </div>
-      <div class="things-4">
-        <img class="things" src="img/all-the-things.png" alt="all the things">
-      </div>
-      </div>
+      <h2>Please go forth and prosper with...</h2>
+      <h1>&lt;&nbsp;web-components&nbsp;&gt;</h1>
+      <p>And just remember...</p>
+      <img src="img/share.jpg"  width="600" height="300">
       <div class="stars"></div>
       <div class="twinkling"></div>
       <div class="clouds"></div>
