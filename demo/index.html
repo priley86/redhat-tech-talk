@@ -540,9 +540,8 @@ observer.observe(this, {
       <p>React uses a very efficient "diffing" algorithm for mutating the DOM only when necessary. It creates a lightweight tree from Javascript objects that mimic a <b>DOM</b> tree.</p>
       <p>There are libraries which can help if you want to imitate Virtual DOM in custom elements.</p>
       <ul>
-        <li>See Rob Dodson's recent <a href="https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133#.c8kkaeq1q">post</a> on using
-          <a href="https://github.com/tbranyen/diffhtml">diffhtml</a></li>
-        <li><a href="https://github.com/skatejs/skatejs">SkateJS</a> makes uses of Google's <a href="https://github.com/google/incremental-dom">Increment DOM</a></li>
+        <li><a href="https://github.com/tbranyen/diffhtml">diffhtml</a> provides a lightweight (9.9kb) implementation which constructs "Virtual" Trees (similar to Virtual DOM) and interpolates markup with tagged template strings.</li>
+        <li><a href="https://github.com/skatejs/skatejs">SkateJS</a> makes uses of Google's <a href="https://github.com/google/incremental-dom">Incremental DOM</a>.</li>
       </ul>
     </web-slide>
 
@@ -576,6 +575,8 @@ class CurrentTime extends HTMLElement {
       <h1>About Virtual DOM...(cont.) </h1>
       <br/>
       <img src="img/diffhtml.gif" width="534" height="284">
+      <br/>
+      <a href="https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133#.ocpvkmfz3">https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133</a>
     </web-slide>
 
     <!-- The Gold Standard -->
@@ -640,9 +641,9 @@ class CurrentTime extends HTMLElement {
       <h1>Thanks!</h1>
       <p>The Patternfly team would like to thank...</p>
       <ul>
-        <li>@RedHatUXD, Red Hat</li>
-        <li>@trianglejs, Triangle JS</li>
-        <li>@rob_dodson, Google</li>
+        <li><a href="https://twitter.com/RedHatUXD">@RedHatUXD</a>, Red Hat</li>
+        <li><a href="https://twitter.com/trianglejs">@trianglejs</a>, Triangle JS</li>
+        <li><a href="https://twitter.com/rob_dodson">@rob_dodson</a>, Google</li>
       </ul>
       <img style="margin:auto;" src="img/clapping.gif" width="266" height="200">
     </web-slide>
