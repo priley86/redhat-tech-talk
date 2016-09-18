@@ -23,7 +23,7 @@
       <h2>Live Long and Prosper with...</h2>
       <h1>&lt;&nbsp;web-components&nbsp;&gt;</h1>
       <img src="img/spock.gif" alt="spock">
-      <p>Triangle JS Meetup, September 2016</p>
+      <p>Triangle JS Meetup, stardate 211609.20</p>
       <div class="stars"></div>
       <div class="twinkling"></div>
       <div class="clouds"></div>
@@ -93,7 +93,7 @@
         <li>Web standards and browsers are evolving, so should we.</li>
         <li>Reusing components from different frameworks is challenging, but it shouldn't be.</li>
         <li>The jQuery story is ending...we can build better plugins now.</li>
-        <li>They make excellent leaf nodes, and be dropped in other framework components like DOM.</li>
+        <li>They make excellent leaf nodes, and can be dropped in other framework components like DOM.</li>
       </ul>
 
       <h2>Web components are...</h2>
@@ -541,7 +541,7 @@ b(7);
 console.log(c()); // 17
       </pre>
       <h2>Example:</h2>
-      <ul><li><a href="https://jsfiddle.net/patrickriley/0wcvhkt4/35/">https://jsfiddle.net/patrickriley/0wcvhkt4/30/</a></li></ul>
+      <ul><li><a href="https://jsfiddle.net/patrickriley/0wcvhkt4/37/">https://jsfiddle.net/patrickriley/0wcvhkt4/37/</a></li></ul>
       <p><a href="http://blog.angular-university.io/functional-reactive-programming-for-angular-2-developers-rxjs-and-observables/">Angular2 Observers/EventEmitters</a> in
         <a href="http://reactivex.io/">RxJS</a> and <a href="http://andrewhfarmer.com/component-communication/">React Observers in Flux</a> (observers also used in
         <a href="http://redux.js.org/">Redux</a>)</p>
@@ -638,6 +638,31 @@ class CurrentTime extends HTMLElement {
       <a href="https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133#.ocpvkmfz3">https://medium.com/dev-channel/the-case-for-custom-elements-part-2-2efe42ce9133</a>
     </web-slide>
 
+    <!-- Skate JS -->
+    <web-slide class="orange-bg" data-transition="fadeInFromTop">
+      <h1>Skate JS</h1>
+      <p>A library built on top the W3C web component standards which aids in rendering and focuses on maintaining a small footprint.</p>
+      <ul>
+        <li>Only 4k min+gz</li>
+        <li>Inherently cross-framework</li>
+      </ul>
+      <p><b>Traditional Virtual DOM:</b></p>
+      <ul>
+        <li>Render an entirely new virtual DOM tree in memory.</li>
+        <li>Diff the tree against the last known virtual DOM tree and apply changes to the physical DOM.</li>
+      </ul>
+      <p><b><a href="https://github.com/google/incremental-dom">Incremental DOM</a></b></p>
+      <ul>
+        <li>While creating the new virtual DOM tree, walk along the existing tree and find changes as you go. Allocate no memory if there is no change. If there is, mutate the existing tree and apply the diff to the phyiscal DOM.</li>
+        <li>Examples:
+          <ul>
+            <li><a href="https://jsfiddle.net/patrickriley/hsoup9pj/12/">https://jsfiddle.net/patrickriley/hsoup9pj/12/</a></li>
+            <li><a href="https://jsfiddle.net/patrickriley/8ydwa2wv/2/">https://jsfiddle.net/patrickriley/8ydwa2wv/2/</a></li>
+          </ul>
+        </li>
+      </ul>
+    </web-slide>
+
     <!-- The Gold Standard -->
     <web-slide class="orange-bg" data-transition="fadeInFromTop">
       <h1>The Gold Standard</h1>
@@ -666,9 +691,9 @@ class CurrentTime extends HTMLElement {
       <ul>
         <li><a href="https://github.com/priley86/pf-tabs-demo">https://github.com/priley86/pf-tabs-demo</a></li>
       </ul>
-      <p>Image Loader Component:</p>
+      <p>Beer JS app:</p>
       <ul>
-        <li></li>
+        <li><a href="https://github.com/priley86/beer-js">https://github.com/priley86/beer-js</a></li>
       </ul>
 
       <img style="margin:auto;" src="img/shake.gif" width="293" height="125">
