@@ -24,7 +24,7 @@ web-slide p {
   color: rgba(0, 0, 0, 0.7);
   margin: 5px 0; }
 
-web-slide:not(:last-child)::shadow div#content {
+web-slide::shadow div#content {
   justify-content: initial;
   align-items: initial;
   text-align: initial;
